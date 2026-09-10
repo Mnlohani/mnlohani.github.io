@@ -1,0 +1,2406 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta
+      name="description"
+      content="Freiheit — an independent product and research project exploring multimodal AI for everyday visual accessibility."
+    />
+
+    <meta name="theme-color" content="#f7f7f5" />
+
+    <title>Freiheit — Everyday visual information, made accessible.</title>
+
+    <style>
+      /* =======================================================
+       FREIHEIT Single webpage
+       ========================================================= */
+
+      :root {
+        --background: #f7f7f5;
+        --surface: #ffffff;
+        --surface-soft: #f0f0ed;
+
+        --text: #111111;
+        --text-secondary: #686868;
+
+        --border: rgba(0, 0, 0, 0.1);
+
+        --accent: #315efb;
+        --accent-soft: rgba(49, 94, 251, 0.09);
+
+        --nav-background: rgba(247, 247, 245, 0.78);
+
+        --radius: 24px;
+
+        --max-width: 1180px;
+
+        --shadow: 0 25px 80px rgba(0, 0, 0, 0.1);
+      }
+
+      html.dark {
+        --background: #0c0d0f;
+        --surface: #151619;
+        --surface-soft: #1c1d21;
+
+        --text: #f4f4f4;
+        --text-secondary: #a3a3a8;
+
+        --border: rgba(255, 255, 255, 0.12);
+
+        --accent: #7f9cff;
+        --accent-soft: rgba(127, 156, 255, 0.12);
+
+        --nav-background: rgba(12, 13, 15, 0.78);
+
+        --shadow: 0 25px 80px rgba(0, 0, 0, 0.35);
+      }
+
+      /* =========================================================
+       RESET
+       ========================================================= */
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        background: var(--background);
+        color: var(--text);
+
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Helvetica,
+          Arial, sans-serif;
+
+        line-height: 1.55;
+
+        -webkit-font-smoothing: antialiased;
+        text-rendering: optimizeLegibility;
+      }
+
+      img,
+      video,
+      iframe {
+        max-width: 100%;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      button {
+        font: inherit;
+      }
+
+      /* =========================================================
+       ACCESSIBILITY
+       ========================================================= */
+
+      :focus-visible {
+        outline: 3px solid var(--accent);
+        outline-offset: 4px;
+      }
+
+      .skip-link {
+        position: fixed;
+        left: 16px;
+        top: -100px;
+        z-index: 100;
+        padding: 10px 15px;
+        background: var(--text);
+        color: var(--background);
+        border-radius: 8px;
+      }
+
+      .skip-link:focus {
+        top: 16px;
+      }
+
+      /* =========================================================
+       NAVIGATION
+       ========================================================= */
+
+      .navbar {
+        position: fixed;
+        z-index: 50;
+
+        top: 0;
+        left: 0;
+        right: 0;
+
+        height: 68px;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        padding: 0 5vw;
+
+        background: var(--nav-background);
+
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+
+        border-bottom: 1px solid transparent;
+
+        transition:
+          border-color 0.25s ease,
+          background 0.25s ease;
+      }
+
+      .navbar.scrolled {
+        border-bottom-color: var(--border);
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+
+        font-size: 22px;
+        font-weight: 650;
+
+        letter-spacing: 0.04em;
+      }
+
+      /* =========================================================
+      PRODUCT SWITCHER
+      ========================================================= */
+
+      .product-switcher {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      padding: 4px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: color-mix(in srgb, var(--surface) 72%, transparent);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      }
+
+      .product-tab {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      min-height: 36px;
+      padding: 7px 13px;
+      border: 0;
+      border-radius: 999px;
+      background: transparent;
+      color: var(--text-secondary);
+      font: inherit;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      cursor: pointer;
+      transition:
+      color 0.25s ease,
+      background 0.25s ease,
+      transform 0.25s ease,
+      box-shadow 0.25s ease;
+      }
+
+      .product-tab:hover {
+      color: var(--text);
+      }
+
+      .product-tab.active {
+      color: var(--text);
+      background: var(--surface);
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.07);
+      }
+
+      .product-icon {
+      font-size: 15px;
+      line-height: 1;
+      }
+
+      .listly-tab.active {
+      color: #b26a22;
+      }
+
+      html.dark .listly-tab.active {
+      color: #e6a05f;
+      }
+
+      @media (max-width: 600px) {
+      .product-switcher {
+      padding: 3px;
+      }
+
+      .product-tab {
+      min-height: 34px;
+      padding: 6px 10px;
+      font-size: 12px;
+      }
+
+      .product-icon {
+      font-size: 14px;
+      }
+      }
+
+      .product-navigation {
+      display: flex;
+      align-items: center;
+      gap: 25px;
+      }
+
+      .product-navigation[hidden] {
+      display: none;
+      }
+
+      .listly-nav a:hover {
+      color: var(--text);
+      }
+
+      .butterfly {
+        font-size: 23px;
+        line-height: 1;
+      }
+
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 25px;
+
+        color: var(--text-secondary);
+
+        font-size: 13px;
+      }
+
+      .nav-links a {
+        transition: color 0.2s ease;
+      }
+
+      .nav-links a:hover {
+        color: var(--text);
+      }
+
+      .theme-button {
+        width: 34px;
+        height: 34px;
+
+        display: grid;
+        place-items: center;
+
+        border: 0;
+        border-radius: 50%;
+
+        background: transparent;
+        color: var(--text);
+
+        cursor: pointer;
+
+        transition: background 0.2s ease;
+      }
+
+      .theme-button:hover {
+        background: var(--surface-soft);
+      }
+
+      /* =========================================================
+       GENERAL LAYOUT
+       ========================================================= */
+
+      main {
+        overflow: hidden;
+      }
+
+      section {
+        width: 100%;
+        padding: 120px 6vw;
+      }
+
+      .container {
+        width: min(var(--max-width), 100%);
+        margin: 0 auto;
+      }
+
+      .eyebrow {
+        margin-bottom: 20px;
+
+        color: var(--text-secondary);
+
+        font-size: 12px;
+        font-weight: 600;
+
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin-top: 0;
+      }
+
+      h1 {
+        max-width: 1050px;
+
+        margin-bottom: 28px;
+
+        font-size: clamp(52px, 8.3vw, 118px);
+        line-height: 0.98;
+
+        font-weight: 600;
+
+        letter-spacing: -0.065em;
+      }
+
+      h2 {
+        max-width: 900px;
+
+        margin-bottom: 25px;
+
+        font-size: clamp(42px, 5.8vw, 76px);
+        line-height: 1.02;
+
+        font-weight: 600;
+
+        letter-spacing: -0.055em;
+      }
+
+      h3 {
+        margin-bottom: 10px;
+
+        font-size: 21px;
+        line-height: 1.15;
+
+        font-weight: 600;
+
+        letter-spacing: -0.025em;
+      }
+
+      .lead {
+        max-width: 720px;
+
+        color: var(--text-secondary);
+
+        font-size: clamp(17px, 2vw, 21px);
+        line-height: 1.55;
+      }
+
+      .muted {
+        color: var(--text-secondary);
+      }
+
+      /* =========================================================
+       BUTTONS
+       ========================================================= */
+
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+
+        margin-top: 30px;
+      }
+
+      .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+
+        min-height: 46px;
+
+        padding: 11px 18px;
+
+        border: 1px solid var(--border);
+        border-radius: 999px;
+
+        font-size: 14px;
+        font-weight: 500;
+
+        transition:
+          transform 0.2s ease,
+          background 0.2s ease,
+          border-color 0.2s ease;
+      }
+
+      .button:hover {
+        transform: translateY(-2px);
+      }
+
+      .button-primary {
+        background: var(--text);
+        color: var(--background);
+        border-color: var(--text);
+      }
+
+      .button-secondary:hover {
+        background: var(--surface);
+      }
+
+      /* =========================================================
+       HERO
+       ========================================================= */
+
+      .hero {
+        min-height: 100vh;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        padding-top: 140px;
+        padding-bottom: 80px;
+      }
+
+      .hero-copy {
+        max-width: 1100px;
+      }
+
+      .hero .lead {
+        margin-bottom: 0;
+      }
+
+      .hero-demo {
+        margin-top: 75px;
+      }
+
+      /* =========================================================
+       VIDEO
+       ========================================================= */
+
+      .video-frame {
+        overflow: hidden;
+
+        background: #111111;
+
+        border-radius: 28px;
+
+        box-shadow: var(--shadow);
+      }
+
+      .video-frame iframe {
+        display: block;
+
+        width: 100%;
+        aspect-ratio: 16 / 9;
+
+        border: 0;
+      }
+
+      .video-caption {
+        padding: 14px 18px;
+
+        background: var(--surface);
+
+        color: var(--text-secondary);
+
+        font-size: 13px;
+      }
+
+      /* =========================================================
+       ORIGIN
+       ========================================================= */
+
+      .origin {
+        min-height: 65vh;
+
+        display: flex;
+        align-items: center;
+      }
+
+      .origin-content {
+        max-width: 930px;
+      }
+
+      .origin-text {
+        max-width: 800px;
+
+        color: var(--text-secondary);
+
+        font-size: clamp(19px, 2.3vw, 27px);
+        line-height: 1.45;
+      }
+
+      .origin-highlight {
+        color: var(--text);
+        font-weight: 500;
+      }
+
+      /* =========================================================
+       CAPABILITIES
+       ========================================================= */
+
+      .capabilities-intro {
+        max-width: 850px;
+      }
+
+      .capability-grid {
+        display: grid;
+
+        grid-template-columns: repeat(3, 1fr);
+
+        gap: 14px;
+
+        margin-top: 50px;
+      }
+
+      .capability-card {
+        min-height: 230px;
+
+        padding: 28px;
+
+        background: color-mix(in srgb, var(--surface) 80%, transparent);
+
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+
+        transition:
+          transform 0.25s ease,
+          box-shadow 0.25s ease,
+          background 0.25s ease;
+      }
+
+      .capability-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow);
+      }
+
+      .capability-label {
+        margin-bottom: 55px;
+
+        color: var(--accent);
+
+        font-size: 12px;
+        font-weight: 700;
+
+        letter-spacing: 0.13em;
+        text-transform: uppercase;
+      }
+
+      .capability-card p {
+        margin-bottom: 0;
+
+        color: var(--text-secondary);
+
+        font-size: 14px;
+      }
+
+      /* =========================================================
+       DEMO SECTION
+       ========================================================= */
+
+      .demo-section {
+        background: var(--surface);
+      }
+
+      .demo-heading {
+        display: grid;
+
+        grid-template-columns: 1fr 1fr;
+
+        gap: 50px;
+
+        align-items: end;
+
+        margin-bottom: 55px;
+      }
+
+      .demo-statement {
+        max-width: 600px;
+
+        font-size: clamp(26px, 3.5vw, 45px);
+        line-height: 1.12;
+
+        letter-spacing: -0.04em;
+      }
+
+      .pill-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+
+        margin-top: 22px;
+      }
+
+      .pill {
+        padding: 8px 12px;
+
+        border: 1px solid var(--border);
+        border-radius: 999px;
+
+        color: var(--text-secondary);
+
+        font-size: 13px;
+      }
+
+      /* =====================================================
+   EVERYDAY QUESTIONS
+   ====================================================== */
+
+      .questions-section {
+        background: var(--background);
+      }
+
+      .question-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0 50px;
+
+        margin-top: 55px;
+        border-top: 1px solid var(--border);
+      }
+
+      .question {
+        padding: 27px 0;
+
+        border-bottom: 1px solid var(--border);
+
+        color: var(--text);
+
+        font-size: clamp(19px, 2.2vw, 27px);
+        line-height: 1.25;
+
+        letter-spacing: -0.025em;
+      }
+
+      .question:hover {
+        color: var(--accent);
+      }
+
+      .questions-closing {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+
+        margin-top: 55px;
+
+        font-size: 18px;
+      }
+
+      .questions-closing span {
+        color: var(--text-secondary);
+      }
+
+      @media (max-width: 700px) {
+        .question-grid {
+          grid-template-columns: 1fr;
+          gap: 0;
+        }
+
+        .question {
+          font-size: 20px;
+        }
+      }
+
+      /* =========================================================
+       SAFETY
+       ========================================================= */
+
+      .safety {
+        background: #111111;
+        color: #ffffff;
+      }
+
+      .safety .eyebrow,
+      .safety .muted {
+        color: #a7a7ad;
+      }
+
+      .safety-content {
+        max-width: 1050px;
+      }
+
+      .safety-statement {
+        max-width: 900px;
+
+        margin-bottom: 35px;
+
+        font-size: clamp(27px, 3.8vw, 48px);
+        line-height: 1.12;
+
+        letter-spacing: -0.04em;
+      }
+
+      .safety-explanation {
+        max-width: 720px;
+
+        color: #a7a7ad;
+
+        font-size: 17px;
+      }
+
+      /* =========================================================
+       RESEARCH
+       ========================================================= */
+
+      .research-content {
+        max-width: 1100px;
+        margin: 0 auto;
+      }
+
+      .research-lead {
+        max-width: 780px;
+      }
+
+      .research-stats {
+        display: grid;
+
+        grid-template-columns: repeat(3, 1fr);
+
+        margin-top: 55px;
+      }
+
+      .research-stat {
+        padding: 28px 30px 28px 0;
+
+        border-top: 1px solid var(--border);
+      }
+
+      .research-stat strong {
+        display: block;
+
+        margin-bottom: 7px;
+
+        font-size: clamp(35px, 5vw, 64px);
+        line-height: 1;
+
+        letter-spacing: -0.06em;
+      }
+
+      .research-stat span {
+        color: var(--text-secondary);
+
+        font-size: 14px;
+      }
+
+      /* =========================================================
+       FINAL
+       ========================================================= */
+
+      .final {
+        min-height: 72vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        text-align: left;
+      }
+
+      .final h2 {
+        max-width: 850px;
+      }
+
+      .final .lead {
+        max-width: 680px;
+      }
+
+      .final .actions {
+        justify-content: flex-start;
+      }
+
+      .final-butterfly {
+        margin-top: 55px;
+        font-size: 52px;
+        text-align: center;
+      }
+      /* =========================================================
+       FOOTER
+       ========================================================= */
+
+      footer {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+
+        padding: 28px 6vw 38px;
+
+        border-top: 1px solid var(--border);
+
+        color: var(--text-secondary);
+
+        font-size: 12px;
+      }
+
+      /* =========================================================
+       REVEAL ANIMATION
+       ========================================================= */
+
+      .reveal {
+        opacity: 0;
+
+        transform: translateY(22px);
+
+        transition:
+          opacity 0.75s ease,
+          transform 0.75s ease;
+      }
+
+      .reveal.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* =========================================================
+       RESPONSIVE
+       ========================================================= */
+
+      @media (max-width: 900px) {
+        .nav-links a:not(.always-visible) {
+          display: none;
+        }
+
+        section {
+          padding: 90px 6vw;
+        }
+
+        .hero {
+          padding-top: 115px;
+        }
+
+        .capability-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .demo-heading {
+          grid-template-columns: 1fr;
+          gap: 20px;
+        }
+
+        .research-stats {
+          grid-template-columns: 1fr;
+        }
+
+        .research-stat {
+          padding-right: 0;
+        }
+      }
+
+      @media (max-width: 600px) {
+        .navbar {
+          height: 62px;
+          padding: 0 5vw;
+        }
+
+        .nav-links {
+          gap: 5px;
+        }
+
+        section {
+          padding: 75px 6vw;
+        }
+
+        .hero {
+          min-height: auto;
+
+          padding-top: 120px;
+          padding-bottom: 65px;
+        }
+
+        h1 {
+          font-size: clamp(47px, 14vw, 75px);
+        }
+
+        h2 {
+          font-size: clamp(39px, 12vw, 58px);
+        }
+
+        .capability-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .capability-card {
+          min-height: 195px;
+        }
+
+        .video-frame {
+          border-radius: 18px;
+        }
+
+        .actions {
+          width: 100%;
+        }
+
+        .button {
+          width: 100%;
+        }
+
+        footer {
+          flex-direction: column;
+        }
+      }
+
+      /* =========================================================
+       REDUCED MOTION
+       ========================================================= */
+
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+
+        *,
+        *::before,
+        *::after {
+          animation: none !important;
+          transition: none !important;
+        }
+
+        .reveal {
+          opacity: 1;
+          transform: none;
+        }
+      }
+
+      /* =========================================================
+      LISTLY
+      ========================================================= */
+
+      .product-page {
+      overflow: hidden;
+      }
+
+      .listly-hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding-top: 130px;
+      padding-bottom: 100px;
+      }
+
+      .listly-hero-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 80px;
+      align-items: center;
+      }
+
+      .listly-hero h1 {
+      max-width: 850px;
+      }
+
+      .listly-gradient {
+      background: linear-gradient(
+      110deg,
+      #c87932,
+      #d9a15b,
+      #a85d24
+      );
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      }
+
+      html.dark .listly-gradient {
+      background: linear-gradient(
+      110deg,
+      #e8a665,
+      #f0c486,
+      #d47b35
+      );
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      }
+
+      .listly-button-primary {
+      background: #b66a2b;
+      color: white;
+      border-color: #b66a2b;
+      }
+
+      .listly-button-primary:hover {
+      background: #a75d23;
+      }
+
+      /* Shopping cart visual */
+
+      .listly-cart-visual {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 430px;
+      }
+
+      .cart-glow {
+      position: absolute;
+      width: 330px;
+      height: 330px;
+      border-radius: 50%;
+      background: rgba(194, 116, 45, 0.12);
+      filter: blur(55px);
+      }
+
+      .cart-card {
+      position: relative;
+      width: min(370px, 100%);
+      padding: 26px;
+      background: color-mix(in srgb, var(--surface) 90%, transparent);
+      border: 1px solid var(--border);
+      border-radius: 30px;
+      box-shadow: var(--shadow);
+      transform: rotate(2deg);
+      }
+
+      .cart-top,
+      .cart-total {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      }
+
+      .cart-top {
+      margin-bottom: 25px;
+      font-size: 15px;
+      font-weight: 600;
+      }
+
+      .cart-count {
+      display: grid;
+      width: 27px;
+      height: 27px;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--surface-soft);
+      color: var(--text-secondary);
+      font-size: 12px;
+      }
+
+      .cart-items {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      }
+
+      .cart-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 15px;
+      }
+
+      .check {
+      display: grid;
+      width: 24px;
+      height: 24px;
+      place-items: center;
+      border-radius: 50%;
+      background: rgba(182, 106, 43, 0.12);
+      color: #b66a2b;
+      font-size: 12px;
+      }
+
+      .cart-total {
+      margin-top: 23px;
+      color: var(--text-secondary);
+      font-size: 13px;
+      }
+
+      /* Introduction */
+
+      .listly-intro {
+      background: var(--surface);
+      }
+
+      .listly-intro-content {
+      max-width: 850px;
+      }
+
+      .listly-conversation {
+      max-width: 700px;
+      margin-top: 65px;
+      margin-left: auto;
+      margin-right: auto;
+      }
+
+      .chat-message {
+      max-width: 78%;
+      padding: 18px 20px;
+      margin-bottom: 16px;
+      border-radius: 22px;
+      }
+
+      .chat-message p {
+      margin: 5px 0 0;
+      font-size: 16px;
+      }
+
+      .chat-label {
+      color: var(--text-secondary);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      }
+
+      .user-message {
+      margin-left: auto;
+      background: var(--surface-soft);
+      border-bottom-right-radius: 6px;
+      }
+
+      .ai-message {
+      margin-right: auto;
+      background: rgba(182, 106, 43, 0.09);
+      border-bottom-left-radius: 6px;
+      }
+
+      /* Feature cards */
+
+      .listly-capabilities {
+      background: var(--background);
+      }
+
+      .listly-feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 55px;
+      }
+
+      .listly-feature-card {
+      min-height: 255px;
+      padding: 28px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: color-mix(in srgb, var(--surface) 75%, transparent);
+      transition:
+      transform 0.25s ease,
+      box-shadow 0.25s ease;
+      }
+
+      .listly-feature-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow);
+      }
+
+      .listly-feature-number {
+      margin-bottom: 55px;
+      color: #b66a2b;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.13em;
+      }
+
+      /* Architecture */
+
+      .listly-stack {
+      background: var(--surface);
+      }
+
+      .listly-stack-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 90px;
+      align-items: center;
+      }
+
+      .stack-diagram {
+      padding: 28px;
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      background: var(--background);
+      }
+
+      .stack-node {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 16px 18px;
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      background: var(--surface);
+      font-size: 15px;
+      font-weight: 600;
+      }
+
+      .stack-node span {
+      color: #b66a2b;
+      font-size: 11px;
+      }
+
+      .stack-line {
+      width: 1px;
+      height: 18px;
+      margin: 0 auto;
+      background: var(--border);
+      }
+
+      /* Demo */
+
+      .listly-demo {
+      background: var(--background);
+      }
+
+      .listly-demo-heading {
+      max-width: 850px;
+      margin-bottom: 55px;
+      }
+
+      /* Final */
+
+      .listly-final {
+      min-height: 75vh;
+      display: flex;
+      align-items: center;
+      background: var(--surface);
+      }
+
+      .listly-final-content {
+      max-width: 900px;
+      }
+
+      .listly-final h2 {
+      max-width: 850px;
+      }
+
+      .listly-cart-large {
+      margin-top: 55px;
+      font-size: 58px;
+      text-align: center;
+      }
+
+.architecture-heading {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.architecture-row img {
+  width: 100%;
+  max-width: 900px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+  border-radius: 10px;
+}
+
+      /* Responsive */
+
+      @media (max-width: 900px) {
+
+      .listly-hero-grid,
+      .listly-stack-grid {
+      grid-template-columns: 1fr;
+      gap: 50px;
+      }
+
+      .listly-cart-visual {
+      min-height: 360px;
+      }
+
+      .listly-feature-grid {
+      grid-template-columns: repeat(2, 1fr);
+      }
+
+      }
+
+      @media (max-width: 600px) {
+
+      .listly-hero {
+      padding-top: 115px;
+      }
+
+      .listly-feature-grid {
+      grid-template-columns: 1fr;
+      }
+
+      .listly-feature-card {
+      min-height: 210px;
+      }
+
+      .chat-message {
+      max-width: 90%;
+      }
+
+      .cart-card {
+      transform: none;
+      }
+
+      }
+      [hidden] {
+        display: none !important;
+        }
+
+    </style>
+  </head>
+
+  <body>
+    <a class="skip-link" href="#main-content"> Skip to content </a>
+
+    <!-- =======================================================
+       NAVIGATION
+       ======================================================== -->
+
+    <header class="navbar" id="navbar">
+      <div class="product-switcher" aria-label="Product selection"> <button class="product-tab active" data-product="freiheit" type="button" aria-selected="true" > <span class="product-icon" aria-hidden="true">🦋</span> <span>Freiheit</span> </button>
+
+        <button
+        class="product-tab listly-tab"
+        data-product="listly"
+        type="button"
+        aria-selected="false"
+        >
+        
+        <span class="product-icon" aria-hidden="true">🛒</span>
+        <span>Listly</span>
+
+        </button> </div>
+
+      <nav class="nav-links" aria-label="Main navigation">
+
+  <!-- Freiheit navigation -->
+
+  <div class="freiheit-nav product-navigation">
+    <a href="#project">Project</a>
+    <a href="#capabilities">Capabilities</a>
+    <a href="#research">Research</a>
+
+
+<a
+  href="https://github.com/Mnlohani/Freiheit"
+  target="_blank"
+  rel="noopener noreferrer"
+  class="always-visible"
+>
+  GitHub ↗
+</a>
+
+
+  </div>
+
+  <!-- Listly navigation -->
+
+  <div class="listly-nav product-navigation" hidden>
+    <a href="#listly-about">About</a>
+    <a href="#listly-capabilities">Technology</a>
+    <a href="#listly-stack">Architecture</a>
+    <a
+                  href="https://youtu.be/u1gUDepjE00"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Demo
+                </a>
+  </div>
+
+<button
+id="themeButton"
+class="theme-button"
+type="button"
+aria-label="Switch to dark mode"
+title="Toggle light and dark mode"
+
+>
+◐
+  </button>
+
+</nav>
+
+    </header>
+
+    <main id="main-content">
+      <div id="freiheit-page" class="product-page">
+      <!-- =====================================================
+         HERO
+         ====================================================== -->
+
+      <section class="hero" id="top">
+        <div class="container">
+          <div class="hero-copy">
+            <div class="eyebrow reveal">
+              Independent product + research project
+            </div>
+
+            <h1 class="reveal">
+              Making everyday visual information accessible.
+            </h1>
+
+            <p class="lead reveal">
+              Freiheit explores how multimodal AI can help people with blindness
+              or low visibility understand the visual information around them —
+              through natural conversation.
+            </p>
+
+            <div class="actions reveal">
+              <a href="https://www.youtube.com/watch?v=DKLlWzGoMVk" 
+              class="button button-primary"
+              target="_blank"
+              rel="noopener noreferrer">
+              Watch the prototype on Youtube ↗
+              </a>
+
+              <a href="#capabilities" class="button button-secondary">
+                Explore Freiheit ↓
+              </a>
+              <a href="https://github.com/Mnlohani/Freiheit" class="button button-secondary">
+              GitHub ↗
+            </a>
+              </a>
+            </div>
+          </div>
+
+          <!-- First real product demo -->
+
+          
+        </div>
+      </section>
+
+      <!-- =====================================================
+         ORIGIN
+         ====================================================== -->
+
+      <section class="origin" id="project">
+        <div class="container">
+          <div class="origin-content reveal">
+            <div class="eyebrow">The beginning</div>
+
+            <h2>It started with an observation.</h2>
+
+            <div class="origin-text">
+              <p>
+                In a crowded Berlin station, I saw a blind person struggling to
+                find an exit.
+              </p>
+
+              <p>
+                It made me wonder whether emerging AI could help make some of
+                the visual information that surrounds us more accessible.
+              </p>
+
+              <p class="origin-highlight">So I started building Freiheit.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================
+         CAPABILITIES
+         ====================================================== -->
+
+      <section id="capabilities">
+        <div class="container">
+          <div class="capabilities-intro">
+            <div class="eyebrow reveal">Everyday visual information</div>
+
+            <h2 class="reveal">A lot of everyday life is visual.</h2>
+
+            <p class="lead reveal">
+              Freiheit is being developed around the small pieces of visual
+              information that sighted people often access without thinking
+              about them.
+            </p>
+          </div>
+
+          <div class="capability-grid">
+            <!-- SHOP -->
+
+            <article class="capability-card reveal">
+              <div class="capability-label">Shop</div>
+
+              <h3>Products, prices & choices</h3>
+
+              <p>
+                Identify products, distinguish similar packaging, read prices
+                and explore discounts while shopping.
+              </p>
+            </article>
+
+            <!-- EAT -->
+
+            <article class="capability-card reveal">
+              <div class="capability-label">Eat</div>
+
+              <h3>Food & nutrition</h3>
+
+              <p>
+                Read ingredients, allergens, nutrition information and dates on
+                food packaging.
+              </p>
+            </article>
+
+            <!-- WEAR -->
+
+            <article class="capability-card reveal">
+              <div class="capability-label">Wear</div>
+
+              <h3>Clothing & style</h3>
+
+              <p>
+                Understand colours, patterns, clothing types and sizes — and
+                explore combinations based on personal preferences.
+              </p>
+            </article>
+
+            <!-- LIVE -->
+
+            <article class="capability-card reveal">
+              <div class="capability-label">Live</div>
+
+              <h3>Home & appliances</h3>
+
+              <p>
+                Interpret washing machines, stoves, ovens, displays, controls
+                and everyday household objects.
+              </p>
+            </article>
+
+            <!-- READ -->
+
+            <article class="capability-card reveal">
+              <div class="capability-label">Read</div>
+
+              <h3>Labels & information</h3>
+
+              <p>
+                Read visual text on products, packaging and medicine.
+                Information access is different from medical advice.
+              </p>
+            </article>
+
+            <!-- EXPLORE -->
+
+            <article class="capability-card reveal">
+              <div class="capability-label">Explore</div>
+
+              <h3>Stations & public spaces</h3>
+
+              <p>
+                Explore signs, platform information, exits, street names and
+                public transport information. These uses require stronger safety
+                validation.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================
+     EVERYDAY QUESTIONS
+     ====================================================== -->
+
+      <section class="questions-section">
+        <div class="container">
+          <div class="eyebrow reveal">Everyday questions</div>
+
+          <h2 class="reveal">
+            Questions sighted people answer without thinking.
+          </h2>
+
+          <p class="lead reveal">
+            For many people, these questions are answered simply by looking.
+            Freiheit explores how that visual information could become
+            accessible through conversation.
+          </p>
+
+          <div class="question-grid">
+            <div class="question reveal">
+              “Same packaging: milk or juice in fridge?”
+            </div>
+
+            <div class="question reveal">
+              “Going out: Do these colours go together?”
+            </div>
+
+            <div class="question reveal">
+              “Allergy: Does this contain peanuts?”
+            </div>
+
+            <div class="question reveal">
+              “Shopping: What size are these trousers?”
+            </div>
+
+            <div class="question reveal">“ Is this milk 1.5% or 3.5%?”</div>
+
+            <div class="question reveal">
+              “Is this diet Coke or regular Coke?”
+            </div>
+
+            <div class="question reveal">
+              “What is the pattern on this shirt?”
+            </div>
+
+            <div class="question reveal">“Is this product on discount?”</div>
+
+            <div class="question reveal">“When does this medicine expire?”</div>
+
+            <div class="question reveal">
+              “What does this washing-machine display??”
+            </div>
+
+            <div class="question reveal">“Which platform is this?”</div>
+
+            <div class="question reveal">“Where is the exit?”</div>
+          </div>
+
+          <div class="questions-closing reveal">
+            <strong> Small questions. Everyday decisions. </strong>
+
+            <span> A large amount of visual information. </span>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================
+         DEMO / VOICE
+         ====================================================== -->
+
+      <section class="demo-section" id="demo">
+        <div class="container">
+          <div class="demo-heading">
+            <div class="reveal">
+              <div class="eyebrow">See · Ask · Understand</div>
+
+              <h2>Talk to what you see.</h2>
+            </div>
+
+            <div class="reveal">
+              <p class="demo-statement">
+                Frei­heit combines visual understanding with multi-turn
+                conversational interaction.
+              </p>
+
+              <div class="pill-row">
+                <span class="pill"> Vision </span>
+
+                <span class="pill"> Voice </span>
+
+                <span class="pill"> Conversation </span>
+
+                <span class="pill"> Everyday tasks </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================
+         SAFETY
+         ====================================================== -->
+
+      <section class="safety">
+        <div class="container">
+          <div class="safety-content reveal">
+            <div class="eyebrow">The hard problem</div>
+
+            <h2>AI can be wrong.</h2>
+
+            <p class="safety-statement">
+              For an ordinary chatbot, an incorrect answer may be frustrating.
+              In a railway station, near a road or around physical hazards, an
+              incorrect answer can become dangerous.
+            </p>
+
+            <p class="safety-explanation">
+              Freiheit is therefore not only about what multimodal AI can do. It
+              is also about reliability, uncertainty, failure modes and the
+              conditions under which an assistive system should — or should not
+              — be trusted.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================
+         RESEARCH / ENGINEERING
+         ====================================================== -->
+
+      <section id="research">
+        <div class="research-content">
+          <div class="eyebrow reveal">
+            Researched · Built · Tested · Learned
+          </div>
+
+          <h2 class="reveal">An independent prototype, built to go further.</h2>
+
+          <p class="lead research-lead reveal">
+            Freiheit has been developed independently around everyday visual use
+            cases. A dedicated dataset was created and used to test scenarios
+            across shopping, clothing, food, laundry, medicine, products,
+            appliances and public environments.
+          </p>
+
+          <div class="research-stats">
+            <div class="research-stat reveal">
+              <strong> 700+ </strong>
+
+              <span> images in the current use-case dataset </span>
+            </div>
+
+            <div class="research-stat reveal">
+              <strong> V1 → V2 </strong>
+
+              <span>
+                iterative computer-vision and multimodal development
+              </span>
+            </div>
+
+            <div class="research-stat reveal">
+              <strong> Open </strong>
+
+              <span> public code and documentation on GitHub </span>
+            </div>
+          </div>
+
+          <div class="actions reveal">
+            <a
+              href="https://github.com/Mnlohani/Freiheit"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="button button-primary"
+            >
+              Explore the project on GitHub ↗
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================
+         FUTURE / CTA
+         ====================================================== -->
+
+      <section class="final">
+        <div class="container">
+          <div class="eyebrow reveal">The next stage</div>
+
+          <h2 class="reveal">The prototype is only the beginning.</h2>
+
+          <p class="lead reveal">
+            The next stage is about real-world user testing, accessibility,
+            safety and reliability research, deployment and collaboration.
+          </p>
+
+          <div class="actions reveal">
+            <a
+              href="https://github.com/Mnlohani/Freiheit"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="button button-primary"
+            >
+              Explore Freiheit ↗
+            </a>
+
+            <a
+              href="mailto:manish.lohani05@gmail.com"
+              class="button button-secondary"
+            >
+              Get in touch
+            </a>
+          </div>
+
+          <div class="final-butterfly" aria-hidden="true">🦋</div>
+        </div>
+      </section>
+      </div>
+      <!-- =====================================================
+     LISTLY
+     ===================================================== -->
+
+        <div id="listly-page" class="product-page" hidden>
+
+          <!-- LISTLY HERO -->
+
+          <section class="listly-hero">
+            <div class="container">
+
+
+          <div class="listly-hero-grid">
+
+            <div class="listly-hero-copy">
+
+              <div class="eyebrow reveal">
+                AI shopping assistant · Telegram
+              </div>
+
+              <h1 class="reveal">
+                Your shopping list,
+                <span class="listly-gradient">just got smarter.</span>
+              </h1>
+
+              <p class="lead reveal">
+                Listly is a voice and text-based AI agent for managing shopping lists across German supermarkets — in German, English, or a natural mix of both. 
+              Your items are organized into supermarket categories, so you find things faster and shop with less effort 🙂
+              </p>
+
+              <div class="actions reveal">
+
+                <a
+                  href="#listly-about"
+                  class="button listly-button-primary"
+                >
+                Watch the demo on Youtube ↗  
+                </a>
+
+                <a
+                  href="https://youtu.be/u1gUDepjE00"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="button button-secondary"
+                >
+                  Explore Listly ↓
+                </a>
+
+              </div>
+
+            </div>
+
+            <!-- Shopping cart visual -->
+            <div class="listly-cart-visual reveal" aria-hidden="true">
+
+              <div class="cart-glow"></div>
+
+              <div class="cart-card">
+
+                <div class="cart-top">
+                  <span>My shopping list</span>
+                  
+                </div>
+
+                <p>
+                <ul class="shopping-list">
+                    <span class="category-title">📦 Brot, Cerealien & Aufstriche</span>
+                    <ul class="items">
+                      <li>Haferflocken</li>
+                    </ul>
+                   <span class="category-title">📦 Getränke & Genussmittel</span>
+                    <ul class="items">
+                      <li>Wasser</li>
+                      <li>Coke</li>
+                    </ul>
+                    <span class="category-title">📦 Obst & Gemüse</span>
+                    <ul class="items">
+                      <li>Potato</li>
+                      <li>Brocalli</li>
+                      <li>Banana</li>
+                      <li>Beans</li>
+                    </ul>
+                </ul>
+                </ul>                  
+              </p>
+
+                <div class="cart-total">
+                  <span>Listly</span>
+                  <span>🛒</span>
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+          </section>
+
+          <!-- LISTLY INTRO -->
+
+          <section id="listly-about" class="listly-intro">
+
+
+        <div class="container">
+
+          <div class="listly-intro-content reveal">
+
+            <div class="eyebrow">
+              Simply tell Listly what you need
+            </div>
+
+            <h2>
+              Shopping lists should feel like a conversation.
+            </h2>
+
+            <p class="lead">
+              Instead of opening an app, finding the right field and typing
+              everything manually, you simply talk to Listly.
+            </p>
+
+          </div>
+
+          <div class="listly-conversation reveal">
+
+            <div class="chat-message user-message">
+              <span class="chat-label">You</span>
+              <p>
+                Add milk rice patatoto brocalli banana and beans.
+              </p>
+            </div>
+            
+            <div class="chat-message ai-message">
+              <span class="chat-label">Listly</span>
+              <p>
+                📝 I heard: Add milk rice potato brocalli banana and beans
+              </p>
+            </div>
+
+            <div class="chat-message ai-message">
+              <span class="chat-label">Listly</span>
+              <p>
+                ✅ Added milk rice patatoto brocalli banana and beans
+              </p>
+            </div>
+
+            <div class="chat-message user-message">
+              <span class="chat-label">You</span>
+              <p>
+                Füge Haferflocken, Wasser und Coke.
+              </p>
+            </div>
+            
+            <div class="chat-message ai-message">
+              <span class="chat-label">You</span>
+              <p>
+                📝 I heard: Füge Haferflocken, Wasser und Coke.
+              </p>
+            </div>
+
+            <div class="chat-message ai-message">
+              <span class="chat-label">Listly</span>
+              <p>
+                ✅ Added Haferflocken, Wasser, Coke.
+              </p>
+            </div>
+
+            <div class="chat-message user-message">
+              <span class="chat-label">You</span>
+              <p>
+                Zeige meine Liste.
+              </p>
+            </div>
+
+            <div class="chat-message ai-message">
+              <span class="chat-label">Listly</span>
+              <p>
+                <ul class="shopping-list">
+                    <span class="category-title">📦 Brot, Cerealien & Aufstriche</span>
+                    <ul class="items">
+                      <li>Haferflocken</li>
+                    </ul>
+                   <span class="category-title">📦 Getränke & Genussmittel</span>
+                    <ul class="items">
+                      <li>Wasser</li>
+                      <li>Coke</li>
+                    </ul>
+                    <span class="category-title">📦 Obst & Gemüse</span>
+                    <ul class="items">
+                      <li>Potato</li>
+                      <li>Brocalli</li>
+                      <li>Banana</li>
+                      <li>Beans</li>
+                    </ul>
+                </ul>
+                </ul>                  
+              </p>
+            </div>
+          </div>
+        </div>
+
+
+          </section>
+
+          <!-- LISTLY CAPABILITIES -->
+
+          <section id="listly-capabilities" class="listly-capabilities"> </section>
+
+
+        <div class="container">
+
+          <div class="eyebrow reveal">
+            Built for everyday shopping
+          </div>
+
+          <h2 class="reveal">
+            Simple on the surface.
+            Serious underneath.
+          </h2>
+
+          <div class="listly-feature-grid">
+            
+            <article class="listly-feature-card reveal">
+
+              <div class="listly-feature-number">
+                01
+              </div>
+
+              <h3>LangGraph + Gemini</h3>
+
+            <p> Built with LangGraph to orchestrate the AI agent’s workflow, keeping shopping-list tasks structured, reliable, and easy to extend. </p>
+
+            </article>
+            <article class="listly-feature-card reveal">
+
+              <div class="listly-feature-number">
+                02
+              </div>
+
+              <h3>Security by design</h3>
+
+              <p>
+                Input validation, prompt-injection protection and
+                SQL-injection protection are built into the system.
+              </p>
+
+            </article>
+
+            </article>
+            <article class="listly-feature-card reveal">
+
+              <div class="listly-feature-number">
+                03
+              </div>
+
+              <h3>Asynchronous Python</h3>
+
+              <p>
+                An asynchronous Python backend designed to make responsive
+                agent interactions faster.
+              </p>
+
+            </article>
+            
+            <article class="listly-feature-card reveal">
+
+              <div class="listly-feature-number">
+                04
+              </div>
+
+              <h3>SQLite</h3>
+
+              <p>
+                Lightweight persistent storage for shopping-list data
+                and conversational state.
+              </p>
+
+            </article>
+
+            <article class="listly-feature-card reveal">
+
+              <div class="listly-feature-number">
+                05
+              </div>
+
+              <h3>Telegram Inteface</h3>
+
+              <p>
+                Use Telegram interface to Add and manage product through voice messages
+                or text conversations.
+              </p>
+
+            </article>
+
+
+            <article class="listly-feature-card reveal">
+
+              <div class="listly-feature-number">
+                06
+              </div>
+
+              <h3>German + English</h3>
+
+              <p>
+                Listly understands German, English and mixed-language
+                conversations naturally.
+              </p>
+
+            
+
+
+            
+
+          </div>
+
+        </div>
+
+
+          </section>
+
+          <!-- LISTLY ARCHITECTURE -->
+
+          <section id="listly-stack" class="listly-stack">
+  <div class="container">
+
+    <div class="listly-stack-grid">
+      <div class="reveal">
+        <div class="eyebrow">Engineering</div>
+        <h2>An AI agent</h2>
+        <p class="lead">
+          Listly connects conversational input keeping validation and security at the core of the system.
+        </p>
+      </div>
+    </div>
+
+   <div class="architecture-images reveal">
+  <div class="architecture-row">
+    <img
+      src="https://raw.githubusercontent.com/Mnlohani/mnlohani.github.io/main/images/Archtecture_Listly.png"
+      alt="Listly architecture diagram"
+      loading="lazy"
+    />
+  </div>
+</div>
+
+  </div>
+</section>
+
+
+          <!-- LISTLY CTA -->
+
+          <section class="listly-final">
+
+        <div class="container">
+
+          <div class="listly-final-content reveal">
+
+            <div class="eyebrow">
+              Listly
+            </div>
+
+            <h2>
+              Tell it what you need.
+              Let Listly handle the list.
+            </h2>
+
+            <p class="lead">
+              A small experiment in making everyday shopping
+              more conversational.
+            </p>
+
+            <div class="actions">
+
+              <a
+                href="https://youtu.be/u1gUDepjE00"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="button listly-button-primary"
+              >
+                Watch the demo on Youtube ↗
+              </a>
+
+            </div>
+
+            <div class="listly-cart-large" aria-hidden="true">
+              🛒
+            </div>
+
+          </div>
+
+        </div>
+
+          </section>
+
+        </div>
+
+    </main>
+
+    <!-- =======================================================
+       FOOTER
+       ======================================================== -->
+
+      <footer>
+        <span id="footer-product">🦋 Freiheit</span>
+        <span>Independent product + research projects</span>
+        <span>© 2026</span>
+      </footer>
+
+
+    <!-- =======================================================
+       JAVASCRIPT
+       ======================================================== -->
+
+    <script>
+      /* -------------------------------------------------------
+       DARK / LIGHT MODE
+       ------------------------------------------------------- */
+
+      const html = document.documentElement;
+      const themeButton = document.getElementById("themeButton");
+
+      const savedTheme = localStorage.getItem("freiheit-theme");
+
+      if (savedTheme === "dark") {
+        html.classList.add("dark");
+      }
+
+      function updateThemeButton() {
+        const darkMode = html.classList.contains("dark");
+
+        themeButton.setAttribute(
+          "aria-label",
+          darkMode ? "Switch to light mode" : "Switch to dark mode",
+        );
+      }
+
+      updateThemeButton();
+
+      themeButton.addEventListener("click", function () {
+        html.classList.toggle("dark");
+
+        const isDark = html.classList.contains("dark");
+
+        localStorage.setItem("freiheit-theme", isDark ? "dark" : "light");
+
+        updateThemeButton();
+      });
+
+      /* -------------------------------------------------------
+       NAVIGATION BORDER WHEN SCROLLING
+       ------------------------------------------------------- */
+
+      const navbar = document.getElementById("navbar");
+
+      function updateNavbar() {
+        if (window.scrollY > 20) {
+          navbar.classList.add("scrolled");
+        } else {
+          navbar.classList.remove("scrolled");
+        }
+      }
+
+      window.addEventListener("scroll", updateNavbar, { passive: true });
+
+      updateNavbar();
+
+      /* -------------------------------------------------------
+       SCROLL REVEAL
+       ------------------------------------------------------- */
+
+      /* ========================================================
+      SCROLL REVEAL
+      ======================================================== */
+
+      const revealElements = document.querySelectorAll(".reveal");
+
+      const revealObserver = new IntersectionObserver(
+      function (entries) {
+
+
+      entries.forEach(function (entry) {
+
+        if (entry.isIntersecting) {
+
+          entry.target.classList.add("visible");
+
+          revealObserver.unobserve(entry.target);
+
+        }
+
+      });
+
+
+      },
+      {
+      threshold: 0.12,
+      }
+      );
+
+      revealElements.forEach(function (element) {
+
+      revealObserver.observe(element);
+
+      });
+
+      /* Respect reduced motion */
+
+      const reducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+      );
+
+      if (reducedMotion.matches) {
+
+      revealElements.forEach(function (element) {
+
+      element.classList.add("visible");
+
+
+      });
+
+      }
+
+      /* ========================================================
+FREIHEIT / LISTLY PRODUCT SWITCHER
+======================================================== */
+
+const productTabs = document.querySelectorAll(".product-tab");
+const freiheitPage = document.getElementById("freiheit-page");
+const listlyPage = document.getElementById("listly-page");
+
+const freiheitNav = document.querySelector(".freiheit-nav");
+const listlyNav = document.querySelector(".listly-nav");
+const footerProduct = document.getElementById("footer-product");
+
+function activateProduct(product) {
+  const isListly = product === "listly";
+
+  // Update active button
+  productTabs.forEach(function (tab) {
+    const isActive = tab.dataset.product === product;
+
+    tab.classList.toggle("active", isActive);
+    tab.setAttribute(
+      "aria-selected",
+      isActive ? "true" : "false"
+    );
+  });
+
+  // Switch pages
+  if (freiheitPage) {
+    freiheitPage.hidden = isListly;
+  }
+
+  if (listlyPage) {
+    listlyPage.hidden = !isListly;
+  }
+
+  // Switch navigation
+  if (freiheitNav) {
+    freiheitNav.hidden = isListly;
+  }
+
+  if (listlyNav) {
+    listlyNav.hidden = !isListly;
+  }
+
+  // Update footer
+  if (footerProduct) {
+    footerProduct.textContent = isListly
+      ? "🛒 Listly"
+      : "🦋 Freiheit";
+  }
+
+  // Go to top
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+
+  // Remember selection
+  localStorage.setItem("active-product", product);
+}
+
+// Button clicks
+productTabs.forEach(function (tab) {
+  tab.addEventListener("click", function () {
+    activateProduct(tab.dataset.product);
+  });
+});
+
+// Default to Freiheit
+const savedProduct = localStorage.getItem("active-product");
+
+if (savedProduct === "listly") {
+  activateProduct("listly");
+} else {
+  activateProduct("freiheit");
+}
+
+    </script>
+  </body>
+</html>
